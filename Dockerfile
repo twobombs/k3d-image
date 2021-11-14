@@ -1,5 +1,5 @@
 FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04 as base
-RUN apt-get update -y && apt-get install -y ca-certificates
+RUN apt-get update -y && apt-get install -y ca-certificates nfs-common open-iscsi
 ADD build/out/data.tar.gz /image
 RUN mkdir -p /image/etc/ssl/certs /image/run /image/var/run /image/tmp /image/lib/modules /image/lib/firmware && \
     cp /etc/ssl/certs/ca-certificates.crt /image/etc/ssl/certs/ca-certificates.crt
