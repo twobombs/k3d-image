@@ -1,6 +1,6 @@
 FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04 as base
 RUN apt-get update -y && apt-get install -y ca-certificates nfs-common open-iscsi
-ADD build/out/data.tar.gz /image
+
 RUN mkdir -p /image/etc/ssl/certs /image/run /image/var/run /image/tmp /image/lib/modules /image/lib/firmware && \
     cp /etc/ssl/certs/ca-certificates.crt /image/etc/ssl/certs/ca-certificates.crt
 RUN cd image/bin && \
@@ -20,10 +20,12 @@ RUN mkdir -p /var/lib/rancher/k3s/agent/etc/containerd/
 COPY config.toml.tmpl /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
 RUN mkdir -p /var/lib/rancher/k3s/server/manifests
 COPY gpu.yaml /var/lib/rancher/k3s/server/manifests/gpu.yaml
+
 VOLUME /var/lib/kubelet
 VOLUME /var/lib/rancher/k3s
 VOLUME /var/lib/cni
 VOLUME /var/log
+
 ENV PATH="$PATH:/bin/aux"
 ENTRYPOINT ["/bin/k3s"]
 CMD ["agent"]
