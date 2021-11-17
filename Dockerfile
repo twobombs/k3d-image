@@ -4,11 +4,9 @@ RUN apt-get update -y && apt-get install -y ca-certificates nfs-common open-iscs
 RUN mkdir -p /image/etc/ssl/certs /image/run /image/var/run /image/tmp /image/lib/modules /image/lib/firmware && \
     cp /etc/ssl/certs/ca-certificates.crt /image/etc/ssl/certs/ca-certificates.crt
 
-FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update -y && apt-get -y install gnupg2 curl
 
-COPY --from=base /image /
 RUN mkdir -p /etc && \
     echo 'hosts: files dns' > /etc/nsswitch.conf
 RUN chmod 1777 /tmp
